@@ -87,7 +87,6 @@
 - (void)commonInit
 {
     self.runLoopMode = [[self class] defaultRunLoopMode];
-    _speedFactor = 10.0;    
     if (@available(iOS 11.0, *)) {
         self.accessibilityIgnoresInvertColors = YES;
     }
@@ -397,14 +396,10 @@ static NSUInteger gcd(NSUInteger a, NSUInteger b)
                 self.needsDisplayWhenImageBecomesAvailable = NO;
             }
             
-            if (_speedFactor > 0) {
-                self.accumulator += displayLink.duration * _speedFactor;
+            if (@available(iOS 10, *)) {
+                self.accumulator += ((NSTimeInterval)1)/((NSTimeInterval)displayLink.preferredFramesPerSecond);
             } else {
-                if (@available(iOS 10, *)) {
-                    self.accumulator += ((NSTimeInterval)1)/((NSTimeInterval)displayLink.preferredFramesPerSecond);
-                } else {
-                    self.accumulator += displayLink.duration * (NSTimeInterval)displayLink.frameInterval;
-                }
+                self.accumulator += displayLink.duration * (NSTimeInterval)displayLink.frameInterval;
             }
                             
             // While-loop first inspired by & good Karma to: https://github.com/ondalabs/OLImageView/blob/master/OLImageView.m
