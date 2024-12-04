@@ -401,7 +401,7 @@ static NSUInteger gcd(NSUInteger a, NSUInteger b)
                 self.accumulator += displayLink.duration * _speedFactor;
             } else {
                 if (@available(iOS 10, *)) {
-                    self.accumulator += displayLink.targetTimestamp - CACurrentMediaTime();
+                    self.accumulator += ((NSTimeInterval)1)/((NSTimeInterval)displayLink.preferredFramesPerSecond);
                 } else {
                     self.accumulator += displayLink.duration * (NSTimeInterval)displayLink.frameInterval;
                 }
